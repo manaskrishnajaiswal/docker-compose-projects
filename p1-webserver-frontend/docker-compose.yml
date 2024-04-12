@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  webserver-frontend:
+    build: .
+    ports:
+      - 8080:80
