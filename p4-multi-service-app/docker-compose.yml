@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  webserver-frontend-service:
+    container_name: webserver-frontend-service
+    image: nginx:latest
+    restart: always
+    depends_on:
+      - webserver-db-service
+      - webserver-backend-service
+    volumes:
+      - .//webserver-frontend-service//build:/usr/share/nginx/html
+      - .//webserver-frontend-service//nginx-config:/etc/nginx/conf.d
+    networks:
+      - frontend
+    ports:
+      - 8080:80
+  webserver-backend-service:
+    build: .//webserver-backend-service
+    restart: always
+    depends_on:
+      - webserver-db-service
+    networks:
+      - frontend
+      - backend
+    ports:
+      - 3000:3000
+  webserver-db-service:
+    build: .//webserver-db-service
+    restart: always
+    networks:
+      - backend
+    ports:
+      - 27017:27017
+networks:
+  frontend:
+  backend:
